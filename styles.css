@@ -1,0 +1,65 @@
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0b1020;
+  color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #151a2b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background: #20263a;
+}
+
+th, td {
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 1px solid #2a3148;
+  font-size: 0.9rem;
+}
+
+th {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+}
+
+tbody tr:nth-child(even) {
+  background: #181e31;
+}
+
+img.messier-thumb {
+  max-width: 80px;
+  max-height: 80px;
+  border-radius: 4px;
+}
+
+.badge-visible {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-visible.o {
+  background: #1f8a4d;
+  color: #eafff3;
+}
+
+.badge-visible.n {
+  background: #8a1f2b;
+  color: #ffecef;
+}
