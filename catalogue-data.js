@@ -104,6 +104,7 @@
     "ngc": "NGC 6121",
     "objet": "Amas Globulaire",
     "saison": "Été",
+    "mag": 5,
     "nom_francais": "Scorpion",
     "latin_name_nom_latin": "Scorpius",
     "ra": "16:23:35.40",
