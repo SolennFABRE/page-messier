@@ -7,6 +7,15 @@ function isVisible(mag) {
 function createRow(obj) {
   const tr = document.createElement('tr');
 
+  function getFrenchLabel(value) {
+    if (!value) return '';
+    const parts = String(value).split('/');
+    if (parts.length > 1) {
+      return parts[1].trim();
+    }
+    return String(value).trim();
+  }
+
   // Messier avec le nom en dessous
   const tdMessier = document.createElement('td');
   const messierNumber = document.createElement('div');
@@ -41,12 +50,12 @@ function createRow(obj) {
 
   // Objet (on garde la chaîne telle quelle : "Globular Cluster / Amas Globulaire")
   const tdObjet = document.createElement('td');
-  tdObjet.textContent = obj.objet || '';
+  tdObjet.textContent = getFrenchLabel(obj.objet);
   tr.appendChild(tdObjet);
 
   // Saison
   const tdSaison = document.createElement('td');
-  tdSaison.textContent = obj.saison || '';
+  tdSaison.textContent = getFrenchLabel(obj.saison);
   tr.appendChild(tdSaison);
 
   // Magnitude
@@ -78,11 +87,11 @@ function createRow(obj) {
 async function loadMessier() {
   try {
     // Utiliser les données directement depuis catalogue-data.js
-    const data = messierData;
+    const data = messierData.map(({ nom_anglais, ...rest }) => rest);
     const rowsPerPage = 10;
     let currentPage = 1;
     const filters = {
-      visibleOnly: false,
+      visibleOnly: true,
       season: '',
       constellation: '',
       type: ''
@@ -107,6 +116,15 @@ async function loadMessier() {
         obj.const ||
         ''
       );
+    }
+
+    function getFrenchLabel(value) {
+      if (!value) return '';
+      const parts = String(value).split('/');
+      if (parts.length > 1) {
+        return parts[1].trim();
+      }
+      return String(value).trim();
     }
 
     function getObjectType(obj) {
@@ -173,7 +191,7 @@ async function loadMessier() {
     function applyFilters(list) {
       return list.filter(obj => {
         if (filters.visibleOnly && !isVisible(obj.mag)) return false;
-        if (filters.season && (obj.saison || '') !== filters.season) return false;
+        if (filters.season && getFrenchLabel(obj.saison) !== filters.season) return false;
         if (filters.constellation && getConstellationDisplay(obj) !== filters.constellation) return false;
         if (filters.type && getObjectType(obj) !== filters.type) return false;
         return true;
@@ -181,7 +199,7 @@ async function loadMessier() {
     }
 
     function renderFilters() {
-      const seasons = Array.from(new Set(data.map(obj => obj.saison).filter(Boolean))).sort();
+      const seasons = Array.from(new Set(data.map(obj => getFrenchLabel(obj.saison)).filter(Boolean))).sort();
       const constellations = Array.from(
         new Set(data.map(obj => getConstellationDisplay(obj)).filter(Boolean))
       ).sort();
