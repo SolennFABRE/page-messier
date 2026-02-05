@@ -1,7 +1,32 @@
-// Règle simple : visible à l'œil nu si mag <= 6
-function isVisible(mag) {
+// Visibilité : vérifier magnitude ET saison (date du jour)
+function isVisible(mag, saisonStr) {
   if (mag === null || mag === undefined) return false;
-  return Number(mag) <= 6;
+  const magOk = Number(mag) <= 6;
+  if (!saisonStr) return magOk;
+
+  function seasonForDate(date) {
+    const m = date.getMonth();
+    if (m === 11 || m === 0 || m === 1) return 'Hiver';
+    if (m >= 2 && m <= 4) return 'Printemps';
+    if (m >= 5 && m <= 7) return 'Été';
+    return 'Automne';
+  }
+
+  function getFrenchLabel(value) {
+    if (!value) return '';
+    const parts = String(value).split('/');
+    if (parts.length > 1) return parts[1].trim();
+    return String(value).trim();
+  }
+
+  const todaySeason = seasonForDate(new Date());
+  const label = getFrenchLabel(saisonStr).toLowerCase();
+  if (label.includes('hiver') && todaySeason !== 'Hiver') return false;
+  if (label.includes('print') && todaySeason !== 'Printemps') return false;
+  if ((label.includes('été') || label.includes('ete')) && todaySeason !== 'Été') return false;
+  if (label.includes('automne') && todaySeason !== 'Automne') return false;
+
+  return magOk;
 }
 
 function createRow(obj) {
@@ -23,7 +48,7 @@ function createRow(obj) {
   messierNumber.style.fontWeight = 'bold';
   tdMessier.appendChild(messierNumber);
   
-  // Ajouter le nom populaire de l'objet s'il existe
+  // Ajoion deuter le nom populaire de l'objet s'il existe
   if (messierNames && messierNames[obj.messier]) {
     const name = document.createElement('div');
     name.textContent = messierNames[obj.messier];
@@ -74,7 +99,7 @@ function createRow(obj) {
 
   // Visible (O / N)
   const tdVisible = document.createElement('td');
-  const visible = isVisible(obj.mag);
+  const visible = isVisible(obj.mag, obj.saison);
   const span = document.createElement('span');
   span.className = 'badge-visible ' + (visible ? 'o' : 'n');
   span.textContent = visible ? 'O' : 'N';
@@ -97,7 +122,7 @@ async function loadMessier() {
       type: ''
     };
     const sortState = {
-      key: 'messier',
+      key: 'mag',
       direction: 'asc'
     };
 
@@ -169,7 +194,7 @@ async function loadMessier() {
         case 'constellation':
           return getConstellationDisplay(obj);
         case 'visible':
-          return isVisible(obj.mag) ? 1 : 0;
+          return isVisible(obj.mag, obj.saison) ? 1 : 0;
         default:
           return '';
       }
@@ -190,7 +215,7 @@ async function loadMessier() {
 
     function applyFilters(list) {
       return list.filter(obj => {
-        if (filters.visibleOnly && !isVisible(obj.mag)) return false;
+        if (filters.visibleOnly && !isVisible(obj.mag, obj.saison)) return false;
         if (filters.season && getFrenchLabel(obj.saison) !== filters.season) return false;
         if (filters.constellation && getConstellationDisplay(obj) !== filters.constellation) return false;
         if (filters.type && getObjectType(obj) !== filters.type) return false;

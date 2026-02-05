@@ -133,7 +133,7 @@ tbody tr:nth-child(even) {
 
 img.messier-thumb {
   max-width: 80px;
-  max-height: 80px;
+  max-height: 50px;
   border-radius: 4px;
 }
 
