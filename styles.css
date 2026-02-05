@@ -1,6 +1,6 @@
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #0b1020;
+  background: #f5f5f5;
   color: #f5f5f5;
   margin: 0;
   padding: 20px;
@@ -9,6 +9,38 @@ body {
 h1 {
   text-align: center;
   margin-bottom: 20px;
+  color:#151a2b
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #151a2b;
+  font-size: 0.9rem;
+}
+
+.filter-item select,
+.filter-item input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.filter-item select {
+  background: #ffffff;
+  color: #151a2b;
+  border: 1px solid #cbd5e0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 
 table {
@@ -36,8 +68,67 @@ th {
   font-size: 0.8rem;
 }
 
+th.sortable {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+th.sortable::after {
+  content: "";
+  display: inline-block;
+  margin-left: 6px;
+  border: 4px solid transparent;
+  border-top-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+th.sortable.asc::after {
+  border-top-color: #94a3b8;
+  border-bottom-color: transparent;
+  transform: translateY(-1px);
+}
+
+th.sortable.desc::after {
+  border-top-color: transparent;
+  border-bottom-color: #94a3b8;
+  transform: translateY(2px);
+}
+
 tbody tr:nth-child(even) {
   background: #181e31;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 4px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  background: #20263a;
+  color: #f5f5f5;
+  border: 1px solid #2a3148;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.pagination button:hover {
+  background: #2a3148;
+}
+
+.pagination button.active {
+  background: #1f8a4d;
+  border-color: #1f8a4d;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 img.messier-thumb {

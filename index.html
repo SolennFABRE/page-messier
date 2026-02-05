@@ -8,22 +8,60 @@
 <body>
   <h1>Catalogue de Messier</h1>
 
+  <div class="filters" id="filters">
+    <label class="filter-item">
+      Visible
+      <input type="checkbox" id="filter-visible" />
+    </label>
+
+    <label class="filter-item">
+      Saison
+      <select id="filter-saison">
+        <option value="">Toutes</option>
+      </select>
+    </label>
+
+    <label class="filter-item">
+      Constellation
+      <select id="filter-constellation">
+        <option value="">Toutes</option>
+      </select>
+    </label>
+
+    <label class="filter-item">
+      Type d'objet
+      <select id="filter-type">
+        <option value="">Tous</option>
+        <option value="Amas Globulaire">Amas Globulaire</option>
+        <option value="Reste de Supernova">Reste de Supernova</option>
+        <option value="Amas Ouvert">Amas Ouvert</option>
+        <option value="Nébuleuse à émission">Nébuleuse à émission</option>
+        <option value="Nébuleuse Planétaire">Nébuleuse Planétaire</option>
+        <option value="Galaxie">Galaxie</option>
+        <option value="Étoile Double">Étoile Double</option>
+        <option value="Nébuleuse à réflexion">Nébuleuse à réflexion</option>
+      </select>
+    </label>
+  </div>
+
   <table id="messier-table">
     <thead>
       <tr>
-        <th>Messier</th>
-        <th>Image</th>
-        <th>Objet</th>
-        <th>Saison</th>
-        <th>Magnitude</th>
-        <th>Constellation</th>
-        <th>Visible</th>
+        <th data-key="messier">Messier</th>
+        <th data-key="image">Image</th>
+        <th data-key="objet">Objet</th>
+        <th data-key="saison">Saison</th>
+        <th data-key="mag">Magnitude</th>
+        <th data-key="constellation">Constellation</th>
+        <th data-key="visible">Visible</th>
       </tr>
     </thead>
     <tbody>
       <!-- Lignes générées en JavaScript -->
     </tbody>
   </table>
+
+  <div id="pagination" class="pagination"></div>
 
   <script src="messier-names.js"></script>
   <script src="catalogue-data.js"></script>
