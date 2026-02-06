@@ -99,6 +99,10 @@ tbody tr:nth-child(even) {
   background: #181e31;
 }
 
+tbody tr:hover {
+  background: #242b42;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
