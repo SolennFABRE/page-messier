@@ -159,6 +159,56 @@ function createRow(obj) {
   return tr;
 }
 
+function setupImageModal() {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('image-modal-img');
+  const modalCaption = document.getElementById('image-modal-caption');
+  if (!modal || !modalImg || !modalCaption) return;
+
+  function openModal(src, alt) {
+    modalImg.src = src;
+    modalImg.alt = alt || '';
+    modalCaption.textContent = alt || '';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    modalImg.src = '';
+    modalCaption.textContent = '';
+  }
+
+  const closeBtn = modal.querySelector('.image-modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+
+  modal.addEventListener('click', event => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modal.classList.contains('open')) {
+      closeModal();
+    }
+  });
+
+  const table = document.getElementById('messier-table');
+  if (table) {
+    table.addEventListener('click', event => {
+      const img = event.target.closest('img');
+      if (!img || !table.contains(img)) return;
+      openModal(img.src, img.alt);
+    });
+  }
+}
+
 async function loadMessier() {
   try {
     // Utiliser les données directement depuis catalogue-data.js
@@ -411,4 +461,7 @@ async function loadMessier() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', loadMessier);
+document.addEventListener('DOMContentLoaded', () => {
+  setupImageModal();
+  loadMessier();
+});
