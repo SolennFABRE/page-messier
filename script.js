@@ -41,6 +41,42 @@ function createRow(obj) {
     return String(value).trim();
   }
 
+  function normalizeConstellationName(value) {
+    if (!value) return '';
+    return String(value)
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function getConstellationDisplay(valueObj) {
+    return (
+      valueObj.nom_francais ||
+      valueObj.latin_name_nom_latin ||
+      valueObj.const ||
+      ''
+    );
+  }
+
+  function getConstellationImageFile(displayName) {
+    if (!displayName) return '';
+    const normalized = normalizeConstellationName(displayName);
+    const constellationImageMap = {
+      'les chiens de chasse': 'Chien de chasse.PNG',
+      'chiens de chasse': 'Chien de chasse.PNG',
+      'chien de chasse': 'Chien de chasse.PNG',
+      'sagittaire': 'Sagitttaire.PNG',
+      'ecu': 'Ecu.PNG'
+    };
+    if (constellationImageMap[normalized]) {
+      return constellationImageMap[normalized];
+    }
+    if (displayName.length <= 3) return '';
+    return displayName + '.PNG';
+  }
+
   // Messier avec le nom en dessous
   const tdMessier = document.createElement('td');
   const messierNumber = document.createElement('div');
@@ -88,13 +124,27 @@ function createRow(obj) {
   tdMag.textContent = obj.mag !== null && obj.mag !== undefined ? obj.mag : '?';
   tr.appendChild(tdMag);
 
-  // Constellation (nom français si dispo, sinon latin, sinon code)
+  // Constellation (image au-dessus du nom)
   const tdConst = document.createElement('td');
-  tdConst.textContent =
-    obj.nom_francais ||
-    obj.latin_name_nom_latin ||
-    obj.const ||
-    '';
+  const constellationName = getConstellationDisplay(obj);
+  const constWrapper = document.createElement('div');
+  constWrapper.className = 'constellation-cell';
+
+  const imageFile = getConstellationImageFile(constellationName);
+  if (imageFile) {
+    const img = document.createElement('img');
+    img.src = 'constellation/' + imageFile;
+    img.alt = constellationName || 'Constellation';
+    img.className = 'constellation-thumb';
+    constWrapper.appendChild(img);
+  }
+
+  const name = document.createElement('div');
+  name.textContent = constellationName;
+  name.className = 'constellation-name';
+  constWrapper.appendChild(name);
+
+  tdConst.appendChild(constWrapper);
   tr.appendChild(tdConst);
 
   // Visible (O / N)
