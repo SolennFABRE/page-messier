@@ -134,7 +134,7 @@ function createRow(obj) {
   const imageFile = getConstellationImageFile(constellationName);
   if (imageFile) {
     const img = document.createElement('img');
-    img.src = 'constellation/' + imageFile;
+    img.src = 'constellation/' + encodeURIComponent(imageFile);
     img.alt = constellationName || 'Constellation';
     img.className = 'constellation-thumb';
     constWrapper.appendChild(img);
