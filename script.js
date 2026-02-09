@@ -67,6 +67,7 @@ function createRow(obj) {
       'les chiens de chasse': 'Chien de chasse.PNG',
       'chiens de chasse': 'Chien de chasse.PNG',
       'chien de chasse': 'Chien de chasse.PNG',
+      'grand chien': 'Grand chien.PNG',
       'sagittaire': 'Sagitttaire.PNG',
       'ecu': 'Ecu.PNG'
     };
